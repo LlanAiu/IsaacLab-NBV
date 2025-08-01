@@ -66,7 +66,7 @@ conda activate isaaclab2.1
 # install packages
 ./isaaclab.sh --install
 
-# if any package is missing, you can try:
+# if any package such as open3d is missing, you can try:
 ./isaaclab.sh -p -m pip install [missing package]
 
 # validate IsaacLab
