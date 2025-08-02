@@ -81,6 +81,14 @@ pip uninstall -y nvidia-cuda-cupti-cu11 nvidia-cuda-nvrtc-cu11 nvidia-cuda-runti
 ## Training
 We assume the dataset is stored under "/home/dsr/Documents/mad3d/New_Dataset20/". Please update this path in both the codebase and command line to match your local setup. If you encounter errors such as "Failed to create change watch", rebooting the system usually resolves the issue.
 
+### Training/Testing Dataset (preprocess)
+Please download our [preprocess data](https://drive.google.com/drive/folders/1jKMGx_uzpmeusHzSs3BKiQ-OWp-ziVOS?usp=drive_link), then update the dataset paths in "*/preprocess/train.txt" and "*/preprocess/test.txt" accordingly.
+```
+# update dataset path in .usd
+# ex: ./isaaclab.sh -p scripts/mad3d/update_texture_path.py --root_dir /home/johnny305/Documents/mad3d/NEW/objaverse/preprocess/ --old_prefix /home/dsr/Documents/mad3d/New_Dataset20 --new_prefix /home/johnny305/Documents/mad3d/NEW
+./isaaclab.sh -p scripts/mad3d/update_texture_path.py --root_dir [preprocess folder path] --old_prefix /home/dsr/Documents/mad3d/New_Dataset20 --new_prefix [new path]
+```
+
 ### Training Dataset (from scratch)
 ```
 # download dataset (please update BASE_PATH)
@@ -108,6 +116,7 @@ sudo sysctl -w vm.max_map_count=524288
 sudo sysctl -w vm.max_map_count=1048576
 
 # train model
+# please change data_root in single_drone_env_cfg.py accordingly
 # since we remove and load a new scene for each episode, you may encounter errors such as "PhysX error: PxRigidActor::detachShape", which can be ignored...
 ./isaaclab.sh -p scripts/mad3d/sb3_single_drone.py --task=MAD3D-v0 --enable_cameras --num_envs 256
 ```
