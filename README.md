@@ -7,7 +7,7 @@ Cheng-You Lu<sup>1</sup>, Zhuoli Zhuang<sup>1</sup>, Nguyen Thanh<sup>1</sup>, T
 
 <p><sup>1</sup>University of Technology Sydney &nbsp;&nbsp;<sup>2</sup>Brown University &nbsp;&nbsp;
 
-### [Projectpage](TBD) · [Paper](TBD) · [Video](TBD)
+### [Projectpage](TBD) · [Paper](TBD) · [Video](https://youtu.be/lgrqn8IMU2w)
 
 </div>
 
@@ -15,7 +15,9 @@ Cheng-You Lu<sup>1</sup>, Zhuoli Zhuang<sup>1</sup>, Nguyen Thanh<sup>1</sup>, T
 
 We propose <b>Hestia</b>, a generalizable RL-based next-best-view planner that actively predicts viewpoints for data capture in 3D reconstruction tasks.
 
-Video TBD
+https://github.com/user-attachments/assets/b5ad6b8a-be2f-4a74-b81b-aa5279a7c2a6
+
+
 
 ## Codebase
 
@@ -93,7 +95,6 @@ Please download our [preprocess data](https://drive.google.com/drive/folders/1jK
 ```
 # download dataset (please update BASE_PATH)
 ./isaaclab.sh -p scripts/mad3d/download_objaverse.py
-# or download the dataset [here](TBD)
 
 # increase the VMA limit if necessary
 sudo sysctl -w vm.max_map_count=524288
@@ -148,7 +149,7 @@ sudo sysctl -w vm.max_map_count=1048576
 ### Houses3K (from scratch)
 ```
 # download raw houses3k data here (https://github.com/darylperalta/Houses3K)
-# or here (TBD)
+
 # fbx to glb
 python3 scripts/mad3d/fbx_to_glb.py --root /home/dsr/Documents/mad3d/New_Dataset20/houses3k/Raw_FBX/ --output /home/dsr/Documents/mad3d/New_Dataset20/houses3k/Raw_GLB/
 
@@ -182,7 +183,8 @@ python3 scripts/mad3d/fbx_to_glb.py --root /home/dsr/Documents/mad3d/New_Dataset
 
 ### OmniObject3D (from scratch)
 ```
-# download OmniObject3D raw data subset here (TBD)
+# download OmniObject3D raw data here (https://omniobject3d.github.io/)
+
 # rename raw data (if necessary)
 sh scripts/mad3d/rename_omni3d.sh
 
@@ -206,3 +208,58 @@ sh scripts/mad3d/rename_omni3d.sh
 # ex: ./isaaclab.sh -p scripts/mad3d/remove_non_visible_pcd.py --pointcloud /home/dsr/Documents/mad3d/New_Dataset20/omni3d/PCD/ --occ /home/dsr/Documents/mad3d/New_Dataset20/omni3d/preprocess/ --output /home/dsr/Documents/mad3d/New_Dataset20/omni3d/PCD_RF/  --mode omniobject3d
 ./isaaclab.sh -p scripts/mad3d/remove_non_visible_pcd.py --pointcloud [raw_pcd_path] --occ [hollow_occ_path] --output [save_folder_path]   --mode [dataset]
 ```
+
+## Citation
+
+If you find the codebase useful for your research, please consider citing:
+
+```
+TBD
+```
+
+Please also consider citing NVIDIA IsaacLab, Objaverse, Houses3K, and OmniObject3D:
+
+```
+@article{mittal2023orbit,
+   author={Mittal, Mayank and Yu, Calvin and Yu, Qinxi and Liu, Jingzhou and Rudin, Nikita and Hoeller, David and Yuan, Jia Lin and Singh, Ritvik and Guo, Yunrong and Mazhar, Hammad and Mandlekar, Ajay and Babich, Buck and State, Gavriel and Hutter, Marco and Garg, Animesh},
+   journal={IEEE Robotics and Automation Letters},
+   title={Orbit: A Unified Simulation Framework for Interactive Robot Learning Environments},
+   year={2023},
+   volume={8},
+   number={6},
+   pages={3740-3747},
+   doi={10.1109/LRA.2023.3270034}
+}
+```
+
+```
+@article{objaverse,
+  title={Objaverse: A Universe of Annotated 3D Objects},
+  author={Matt Deitke and Dustin Schwenk and Jordi Salvador and Luca Weihs and
+          Oscar Michel and Eli VanderBilt and Ludwig Schmidt and
+          Kiana Ehsani and Aniruddha Kembhavi and Ali Farhadi},
+  journal={arXiv preprint arXiv:2212.08051},
+  year={2022}
+}
+```
+
+```
+@article{peralta2020next,
+  title={Next-Best View Policy for 3D Reconstruction},
+  author={Peralta, Daryl and Casimiro, Joel and Nilles, Aldrin Michael and Aguilar, Justine Aletta and Atienza, Rowel and Cajote, Rhandley},
+  journal={arXiv preprint arXiv:2008.12664},
+  year={2020}
+}
+```
+
+```
+@inproceedings{wu2023omniobject3d,
+    author = {Tong Wu and Jiarui Zhang and Xiao Fu and Yuxin Wang and Jiawei Ren, 
+    Liang Pan and Wayne Wu and Lei Yang and Jiaqi Wang and Chen Qian and Dahua Lin and Ziwei Liu},
+    title = {OmniObject3D: Large-Vocabulary 3D Object Dataset for Realistic Perception, 
+    Reconstruction and Generation},
+    booktitle={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    year={2023}
+}
+```
+
