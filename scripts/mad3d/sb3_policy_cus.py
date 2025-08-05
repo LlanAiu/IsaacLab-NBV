@@ -71,6 +71,10 @@ def get_constraint_actions(prob_grid, actions, h_limit, threshold, env_size):
         # Set z positions above h_limit for this environment to False
         z_limit = max((h_limit[env]*n+0.5).ceil().int(), 1)
         prob_grid[env, :, :, z_limit:] = 0.5
+        # TODO: uncomment this for real-world demo
+        # real drone has minimal flyable height
+        #prob_grid[env, :, :, :5] = 0.5
+
 
     # Flatten prob_grid and create a free space mask
     prob_grid_flat = prob_grid.view(num_env, -1)
@@ -98,6 +102,12 @@ def get_constraint_actions(prob_grid, actions, h_limit, threshold, env_size):
     # Calculate the offset and update actions only if world_actions are not free
     offset = nearest_voxel - world_actions.detach()
     new_world_actions = is_world_action_free.unsqueeze(1) * world_actions + (1 - is_world_action_free).unsqueeze(1) * (world_actions + offset)
+
+    # TODO: uncommet this for real-world demo
+    # when there are no available points, we should still restrict the drone's height (e.g., 50 cm).
+    #if masked_distances.min() >= 1e6:
+    #    new_world_actions[0][2] = 0.5
+    
 
     # Convert new_world_actions back to [-1, 1] range in voxel space
     new_actions = (new_world_actions / action_scale_factors) - action_offset
