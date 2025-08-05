@@ -1,9 +1,12 @@
 import torch
 import numpy as np
-import omni
-from isaacsim.core.utils.prims import get_prim_at_path
-from pxr import UsdGeom, Usd, Gf, Sdf
-import open3d as o3d
+try:
+    import omni
+    from omni.isaac.core.utils.prims import get_prim_at_path
+    from pxr import UsdGeom, Usd, Gf, Sdf
+    import open3d as o3d
+except:
+    pass
 
 
 def compute_weighted_centroid(obv_occ, gt_occ):
