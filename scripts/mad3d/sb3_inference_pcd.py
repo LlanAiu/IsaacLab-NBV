@@ -1,5 +1,5 @@
 import argparse
-from omni.isaac.lab.app import AppLauncher
+from isaaclab.app import AppLauncher
 
 # Add argparse arguments
 parser = argparse.ArgumentParser(description="Utility to create occupancy grid")
@@ -33,7 +33,7 @@ import time
 import open3d as o3d
 #from pytorch3d.loss import chamfer_distance
 from PIL import Image
-from isaacsim.core import World
+from isaacsim.core.api import World
 from isaacsim.core.utils.stage import add_reference_to_stage
 from isaacsim.core.prims import XFormPrim
 from isaaclab.sensors import CameraCfg, Camera
@@ -137,7 +137,7 @@ def setup_scene(world, scene_path, index, scene_prim_root="/World/Scene"):
     scene = add_reference_to_stage(usd_path=scene_path, prim_path=scene_prim_root)
 
     # define the property of the stage
-    scene_prim = XFormPrim(prim_path=scene_prim_root, translation=[0, 0, 0])
+    scene_prim = XFormPrim(prim_paths_expr=scene_prim_root, translations=[[0, 0, 0]])
 
     # activate the stage
     world.scene.add(scene_prim)
@@ -156,7 +156,8 @@ def setup_scene(world, scene_path, index, scene_prim_root="/World/Scene"):
                 clipping_range=(0.01, 60.0) # near and far plane in meter
             ),
         width=CAMERA_WIDTH,
-        height=CAMERA_HEIGHT
+        height=CAMERA_HEIGHT,
+        update_latest_camera_pose=True
     )
  
     scene_entities = {}
@@ -697,7 +698,7 @@ def main():
                     faces_path = os.path.join(directory, "faces.npy")
                     fill_occ_set_path = os.path.join(directory, "fill_occ_set.pkl")
                     #print(os.path.join(directory.replace('preprocess', 'PCD_RF'), "*.ply"))
-                    pcd_path = glob.glob(os.path.join(directory.replace('preprocess', 'PCD100K_RF'), "*.ply"))[0]
+                    pcd_path = glob.glob(os.path.join(directory.replace('preprocess', 'PCD_RF'), "*.ply"))[0]
 
                     # Ensure the required files exist
                     if usd_files and os.path.exists(faces_path) and os.path.exists(fill_occ_set_path):
@@ -737,7 +738,8 @@ def main():
                 clipping_range=(0.01, 60.0) # near and far plane in meter
             ),
         width=CAMERA_WIDTH,
-        height=CAMERA_HEIGHT
+        height=CAMERA_HEIGHT,
+        update_latest_camera_pose=True
     )
     scene_entities = {}
     scene_entities[f"camera_0"] = Camera(cameraCfg)
@@ -753,10 +755,10 @@ def main():
         scene_prim_root=f"/World/Scene_{i}"
         scene = add_reference_to_stage(usd_path=scene_path, prim_path=scene_prim_root)
         # define the property of the stage
-        scene_prim = XFormPrim(prim_path=scene_prim_root, name=f"Scene_{i}", translation=TRANS)
+        scene_prim = XFormPrim(prim_paths_expr=scene_prim_root, name=f"Scene_{i}", translations=[TRANS])
         # activate the stage
         world.scene.add(scene_prim)
-        scene_prim_path = scene_prim.prim_path
+        scene_prim_path = scene_prim.prim_paths[0]
 
         # output dir
         output_dir = os.path.dirname(scene_path)
