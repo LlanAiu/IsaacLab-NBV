@@ -209,6 +209,11 @@ sh scripts/mad3d/rename_omni3d.sh
 ./isaaclab.sh -p scripts/mad3d/remove_non_visible_pcd.py --pointcloud [raw_pcd_path] --occ [hollow_occ_path] --output [save_folder_path]   --mode [dataset]
 ```
 
+## Real-World Demo
+
+Please check this [repository](https://github.com/johnnylu305/Hestia-NBV-Demo).
+
+
 ## Citation
 
 If you find the codebase useful for your research, please consider citing:
