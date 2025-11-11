@@ -1,7 +1,7 @@
 ---
 <div align="center">
 
-# <b>Hestia</b>: Hierarchical Next-Best-View Exploration for Systematic Intelligent Autonomous Data Collection
+# <b>Hestia</b>: Voxel-Face-Aware Hierarchical Next-Best-View Acquisition for Efficient 3D Reconstruction
 
 Cheng-You Lu<sup>1</sup>, Zhuoli Zhuang<sup>1</sup>, Nguyen Thanh Trung Le<sup>1</sup>, Da Xiao<sup>1</sup>, Yu-Cheng Chang<sup>1</sup>, Thomas Do<sup>1</sup>, Srinath Sridhar<sup>2</sup>, Chin-Teng Lin<sup>1</sup>
 
