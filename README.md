@@ -7,7 +7,7 @@ Cheng-You Lu<sup>1</sup>, Zhuoli Zhuang<sup>1</sup>, Nguyen Thanh Trung Le<sup>1
 
 <p><sup>1</sup>University of Technology Sydney &nbsp;&nbsp;<sup>2</sup>Brown University &nbsp;&nbsp;
 
-### [Projectpage](https://johnnylu305.github.io/hestia_web/) · [Paper](https://arxiv.org/abs/2508.01014) · [Video](https://youtu.be/lgrqn8IMU2w)
+### [Projectpage](https://johnnylu305.github.io/hestia_web/) · [Paper](https://arxiv.org/abs/2508.01014) · [Video](https://www.youtube.com/watch?v=xQDFw1Xj3i0)
 
 </div>
 
@@ -15,7 +15,10 @@ Cheng-You Lu<sup>1</sup>, Zhuoli Zhuang<sup>1</sup>, Nguyen Thanh Trung Le<sup>1
 
 We propose <b>Hestia</b>, a generalizable RL-based next-best-view planner that actively predicts viewpoints for data capture in 3D reconstruction tasks.
 
-https://github.com/user-attachments/assets/b5ad6b8a-be2f-4a74-b81b-aa5279a7c2a6
+
+
+https://github.com/user-attachments/assets/5a0e22b3-ba7f-4e14-a3fc-56b608873edb
+
 
 
 
