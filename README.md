@@ -222,8 +222,8 @@ Please check this [repository](https://github.com/johnnylu305/Hestia-NBV-Demo).
 If you find the codebase useful for your research, please consider citing:
 
 ```
-@misc{lu2025hestiahierarchicalnextbestviewexploration,
-      title={Hestia: Hierarchical Next-Best-View Exploration for Systematic Intelligent Autonomous Data Collection}, 
+@misc{lu2025hestiavoxelfaceawarehierarchicalnextbestview,
+      title={Hestia: Voxel-Face-Aware Hierarchical Next-Best-View Acquisition for Efficient 3D Reconstruction}, 
       author={Cheng-You Lu and Zhuoli Zhuang and Nguyen Thanh Trung Le and Da Xiao and Yu-Cheng Chang and Thomas Do and Srinath Sridhar and Chin-teng Lin},
       year={2025},
       eprint={2508.01014},
