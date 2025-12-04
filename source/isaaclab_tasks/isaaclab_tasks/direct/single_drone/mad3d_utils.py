@@ -2,7 +2,8 @@ import torch
 import numpy as np
 try:
     import omni
-    from omni.isaac.core.utils.prims import get_prim_at_path
+    from isaacsim.core.utils.prims import get_prim_at_path
+    #from omni.isaac.core.utils.prims import get_prim_at_path
     from pxr import UsdGeom, Usd, Gf, Sdf
     import open3d as o3d
 except:
