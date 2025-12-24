@@ -5,13 +5,15 @@ import argparse
 import pickle
 import open3d as o3d
 from collections import deque
-
+from tqdm import tqdm
+from isaaclab.utils.io import expand_range
 
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Preprocess occ.npy into faces.npy, fill_occ_set.pkl and hollow_occ.npy.")
 parser.add_argument("input", type=str, help="The root to the input occupancy grid.")
 parser.add_argument("--vis", action="store_true", help="If set, visualize results using vis_face_and_voxel.")
+parser.add_argument("--subdirs", type=str, default=None, help="Range of top-level subdirectory names to include, exclusive of the endpoint (e.g. '000-000..000-010'). All are processed if omitted")
 # parse the arguments
 args_cli = parser.parse_args()
 
@@ -231,29 +233,42 @@ def vis_face_and_voxel(hollow_occ, face_vis):
 
 def main():
     # load target paths
-    scenes_path = sorted(glob.glob(os.path.join(args_cli.input, '**', 'occ.npy'), recursive=True))
-    for i, scene_path in enumerate(scenes_path):
-        print(f"Start processing {i} {scene_path}")
+    scenes_path = []
+    if args_cli.subdirs:
+        spec = args_cli.subdirs.strip()
+        allowed = expand_range(spec)
+        print(f"Looking in subdirectories: {allowed}")
+        
+        for subdir in allowed:
+            subdir_paths = glob.glob(os.path.join(args_cli.input, subdir, '**', 'occ.npy'), recursive=True)
+            scenes_path.extend(subdir_paths)
+        
+        scenes_path.sort()
+    else: 
+        scenes_path = sorted(glob.glob(os.path.join(args_cli.input, '**', 'occ.npy'), recursive=True))
+    
+    for i, scene_path in enumerate(tqdm(scenes_path)):
+        tqdm.write(f"Start processing {i} {scene_path}")
 
         # solid occupancy grid in set formati for collision detection
-        print("Start generating fill_occ_set.pkl")
+        tqdm.write("Start generating fill_occ_set.pkl")
         occ_set, occ_set_dilated, grid_size = fill_grid(scene_path)
-        print(f"Occupied voxels of fill_occ_set.pkl: {len(occ_set_dilated)}")
+        tqdm.write(f"Occupied voxels of fill_occ_set.pkl: {len(occ_set_dilated)}")
             
         # hollow occupancy grid without faces
-        print("Start generating hollow_occ.npy")
+        tqdm.write("Start generating hollow_occ.npy")
         hollow_set, hollow_grid = convert_to_hollow(scene_path, occ_set, grid_size)
-        print(f"Occupied voxels of hollow_occ.npy: {np.sum(hollow_grid)}")
+        tqdm.write(f"Occupied voxels of hollow_occ.npy: {np.sum(hollow_grid)}")
         
         # hollow occupancy grid with six faces
-        print("Start generating faces.npy")
+        tqdm.write("Start generating faces.npy")
         face_vis = save_face(scene_path, hollow_grid, occ_set)
-        print(f"Faces of faces.npy: {np.sum(face_vis)}")
+        tqdm.write(f"Faces of faces.npy: {np.sum(face_vis)}")
         # visualization for debug purpose
         if args_cli.vis:
-            print("Visualization enabled. Launching Open3D window...")
+            tqdm.write("Visualization enabled. Launching Open3D window...")
             vis_face_and_voxel(hollow_grid, face_vis)
-        print("")
+        tqdm.write("")
 
 if __name__=="__main__":
     main()

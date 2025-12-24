@@ -11,7 +11,7 @@ from tqdm import tqdm
 from concurrent import futures
 
 
-BASE_PATH = '/home/dsr/Documents/mad3d/New_Dataset20/objaverse'
+BASE_PATH = '/playpen-nas-ssd4/aliu06/NBV/data/objaverse'
 __version__ = "1.0"
 _VERSIONED_PATH = os.path.join(BASE_PATH, "hf-objaverse-v1")
 
@@ -219,11 +219,10 @@ if __name__ == "__main__":
     object_paths = _load_object_paths()
 
     # download subset
-    #uids = [k for k, v in object_paths.items() if v.startswith("glbs/000-000")][
-    #    500:1000
-    #]
-
-    annotations = load_annotations(object_paths)
+    prefixes = [f"glbs/000-{str(i).zfill(3)}" for i in range(151, 160)]
+    uids = [k for k, v in object_paths.items() if any(v.startswith(prefix) for prefix in prefixes)]
+    
+    annotations = load_annotations(uids)
     
     # filter
     #dict_keys(['uri', 'uid', 'name', 'staffpickedAt', 'viewCount', 'likeCount', 'animationCount', 'viewerUrl', 'embedUrl', 'commentCount', 'isDownloadable', 'publishedAt', 'tags', 'categories', 'thumbnails', 'user', 'description', 'faceCount', 'createdAt', 'vertexCount', 'isAgeRestricted', 'archives', 'license'])
@@ -232,5 +231,5 @@ if __name__ == "__main__":
     cc_by_uids = [uid for uid, annotation in annotations.items() if (annotation["faceCount"] <= 50000) and annotation["animationCount"] <= 0 and annotation['vertexCount'] <=1000]
     
     # reduce download_processes if huggingface limits requests
-    objects = load_objects(cc_by_uids, download_processes=2)
+    objects = load_objects(cc_by_uids, download_processes=3)
     print(f"Loaded {len(objects)} objects")

@@ -29,6 +29,17 @@ parser.add_argument(
     default=None,
     help="The mass (in kg) to assign to the converted asset. If not provided, then no mass is added.",
 )
+
+parser.add_argument(
+    "--subdirs",
+    type=str,
+    default=None,
+    help=(
+        "Range of top-level subdirectory names to include, exclusive of the endpoint (e.g. '000-000..000-010')."
+        "If omitted, all subdirectories are processed."
+    ),
+)
+
 # append AppLauncher cli args
 AppLauncher.add_app_launcher_args(parser)
 # parse the arguments
@@ -39,10 +50,12 @@ app_launcher = AppLauncher(args_cli)
 simulation_app = app_launcher.app
 
 """Rest everything follows."""
-
 import contextlib
 import os
+import re
+import builtins
 
+from tqdm import tqdm
 import carb
 import glob
 import isaacsim.core.utils.stage as stage_utils
@@ -114,6 +127,36 @@ def run_convert(mesh_path, dest_path):
     print("-" * 80)
     print("-" * 80)
 
+def split_prefix_num(s):
+    m = re.search(r'(\d+)$', s)
+    if not m:
+        return s, None, 0
+    num = int(m.group(1))
+    prefix = s[:m.start(1)]
+    width = len(m.group(1))
+
+    return prefix, num, width
+
+def expand_range(spec: str):
+    if '..' not in spec:
+        raise ValueError("Range must contain '..'")
+
+    left, right = spec.split('..', 1)
+
+    p1, n1, w1 = split_prefix_num(left)
+    p2, n2, w2 = split_prefix_num(right)
+
+    if n1 is None or n2 is None:
+        raise ValueError("Both endpoints must end with a number")
+
+    if p1 != p2:
+        raise ValueError(f"Prefixes differ: {p1!r} vs {p2!r}")
+
+    if n1 > n2:
+        raise ValueError("Start is greater than end")
+
+    width = max(w1, w2)
+    return [f"{p1}{str(i).zfill(width)}" for i in range(n1, n2)]
 
 def main():
     # load all 3D model paths  
@@ -123,16 +166,37 @@ def main():
     for ext in extensions:
         meshes_path.extend(glob.glob(os.path.join(args_cli.input, '**', ext), recursive=True))
 
-    start = 0
-    # start conversion 3D model (glb, obj, fbx) to rescaled, shifted usd and occupancy grid (occ.npy)
-    for i, mesh_path in enumerate(meshes_path[start:]):
-        print(i+start)
-        relative_path = os.path.relpath(mesh_path, args_cli.input)
-        dest_path = os.path.join(args_cli.output, relative_path)
-        # save path
-        dest_path = os.path.join(dest_path[:-4], os.path.split(relative_path)[-1][:-3]+'usd')
-        run_convert(mesh_path, dest_path)
+    if args_cli.subdirs:
+        spec = args_cli.subdirs.strip()
+        allowed = set(expand_range(spec))
+        print(f"Looking in subdirectories: {allowed}")
+        if allowed:
+            filtered = []
+            for p in meshes_path:
+                rel = os.path.relpath(p, args_cli.input)
+                top = rel.split(os.sep)[0]
+                if top in allowed:
+                    filtered.append(p)
+            meshes_path = filtered 
 
+    start = 0
+    total = len(meshes_path)
+
+    original_print = builtins.print
+    builtins.print = tqdm.write
+
+    try:
+        print(f"Number of files to convert: {total}")
+        # start conversion 3D model (glb, obj, fbx) to rescaled, shifted usd and occupancy grid (occ.npy)
+        for i, mesh_path in enumerate(tqdm(meshes_path[start:])):
+            relative_path = os.path.relpath(mesh_path, args_cli.input)
+
+            dest_path = os.path.join(args_cli.output, relative_path)
+            # save path
+            dest_path = os.path.join(dest_path[:-4], os.path.split(relative_path)[-1][:-3]+'usd')
+            run_convert(mesh_path, dest_path)
+    finally:
+        builtins.print = original_print
 
 if __name__ == "__main__":
     # run the main function

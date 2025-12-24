@@ -325,20 +325,18 @@ def replace_strings_with_slices(data: dict) -> dict:
     else:
         return data
 
-
 def print_dict(val, nesting: int = -4, start: bool = True):
     """Outputs a nested dictionary."""
     if isinstance(val, dict):
         if not start:
-            print("")
+            print("")  # This is fine, just prints a newline
         nesting += 4
         for k in val:
-            print(nesting * " ", end="")
-            print(k, end=": ")
+            print(" " * nesting + str(k) + ": ", end="")  # Combine into one string
             print_dict(val[k], nesting, start=False)
     else:
         # deal with functions in print statements
         if callable(val):
-            print(callable_to_string(val))
+            print(str(callable_to_string(val)))
         else:
-            print(val)
+            print(str(val))

@@ -62,7 +62,7 @@ CRAZYFLIE_CFG = ArticulationCfg(
 class MAD3DEnvCfg(DirectRLEnvCfg):
 
     # data
-    data_root = os.path.join(os.path.abspath(os.sep), "home", "dsr", "Documents", "mad3d", "New_Dataset20", "objaverse") #"house3k")
+    data_root = os.path.join(os.path.abspath(os.sep), "playpen-nas-ssd4", "aliu06", "NBV", "data", "objaverse") #"house3k")
     camera_folder = CAMERA_FOLDER
 
     # env

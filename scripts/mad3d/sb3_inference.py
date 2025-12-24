@@ -65,6 +65,7 @@ CAMERA_WIDTH = 900
 TARGET_HEIGHT = 300
 TARGET_WIDTH = 300
 
+sys.path.insert(0, "/playpen-nas-ssd4/aliu06/NBV/Hestia-NBV")
 
 def _bresenhamline_nslope(slope, device):
     scale = torch.amax(torch.abs(slope), dim=1).reshape(-1, 1)
