@@ -20,8 +20,6 @@ We propose <b>Hestia</b>, a generalizable RL-based next-best-view planner that a
 https://github.com/user-attachments/assets/5a0e22b3-ba7f-4e14-a3fc-56b608873edb
 
 
-
-
 ## Codebase
 
 The codebase contains the training and testing code for Hestia in a simulation environment. The codebase is based on the NVIDIA IsaacLab 2.1 (July 12, 2025) repository. Please follow the [IsaacLab installation guide](https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/index.html
@@ -30,6 +28,16 @@ The codebase contains the training and testing code for Hestia in a simulation e
 ## Environment
 
 The original Hestia codebase was built on IsaacSim 4.2.0. Due to significant updates to IsaacLab since then, we have upgraded it to IsaacLab 2.1 and IsaacSim 4.5.0, using an environment with Ubuntu 22.04, Python 3.10, and an NVIDIA RTX A6000 GPU.
+
+## [Update 2025 Dec] Results (CR/CD) reproduced from the codebase
+
+I borrowed an A6000 machine from my colleague and reproduced the results using this codebase. The results look slightly unstable (For example, the (4, 4) and (4, −4) results show slight bias in this run.), but I don’t believe this is a bug in the new codebase. It’s more likely due to the inherent variability in RL training. I only trained a single model here, so if you’d like the best or most stable performance, I recommend retraining the model once or twice. You’re welcome to use the paper results, the results shown here, or your own retrained results. Please also note that results may differ slightly even with the same model, likely due to the reparameterization trick used in the model.
+
+| Dataset | (0, 0) | (4, 4) | (4, -4) | (-4, 4) | (-4, -4) |
+|-----------|------------|---------------|------------|---------|----------|
+| Omni3D    | 96.9 / 4 | 95.7 / 7  | 95.6 / 7  | 96.7 /4  | 96.7 / 5 |
+| Objaverse | 96.3 / 7 | 95.3 / 8  | 95.9 / 8  | 96.3 / 7 | 96.3 / 7 |
+| Houses3K  | 96.8 / 7 | 94.2 / 11 | 94.2 / 12 | 97.1 / 6 | 96.6 / 8 |
 
 ### Install IsaacSim
 
